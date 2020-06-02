@@ -1,0 +1,13 @@
+SOUND内のファイルの説明です。このファイルを消しても本体に影響はありません。
+Notes_Tap_wonderful　WONDERFUL判定でTAP及びHOLD始点を叩いた時の判定音
+Notes_Tap_great　　　GREAT判定でTAP及びHOLD始点を(以下略
+Notes_Tap_nice　　　 NICE判定で(以下略
+Notes_Tap_bad　　　　BAD(以下略
+Notes_Tap_ex　　　　 EXTAPを叩いた時の判定音
+Notes_Tap_none　　　 ノーツが来てない時にキーを押した時の音
+Notes_Hold_end　　　 HOLD終点の判定音
+いい音源が見つからなかったので上記の音はすべて同じものにしています。よさげな音を見つけたら差し替えてみてください。
+
+Notes_Flick　　　　　フリックの判定音
+
+音源はすべて.wavファイルにしてください。
