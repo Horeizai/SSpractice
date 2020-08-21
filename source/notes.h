@@ -10,6 +10,7 @@ void getScoreFromNotes(int* score, int comboCount[6], bool* notUseAutoMode_);
 int getClearMark(void);
 
 void updateNotes(double currentTime, double speed);
+void calcThroughComboAndScore(double currentTime, bool autoMode);
 void setup_notes();
 void judge_notes(double currentTime, bool autoMode);
 bool checkChartPlaying(void);

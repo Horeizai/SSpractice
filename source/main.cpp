@@ -55,6 +55,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 {
 	config.loadConfig(&config, "config.ini");
 	// 画面モードの設定
+	SetUseCharCodeFormat( DX_CHARCODEFORMAT_SHIFTJIS );
 	ChangeWindowMode(TRUE);								//ウィンドウモード
 	SetMainWindowText("SSplactice v1.0.0");				//ウインドウのタイトルを設定
 	SetWindowIconID(IDI_ICON1);							//アイコンを設定

@@ -111,6 +111,7 @@ void live_main(image_ image, sound_ sound) {
             liveScene = reload;
         }
         if (checkKey(KEY_INPUT_SPACE) == 1) {
+            calcThroughComboAndScore(currentTime, autoMode);
             liveScene = waiting;
             start_count = GetNowHiPerformanceCount();
         }

@@ -60,6 +60,7 @@ int number_L, number_R;
 bool holding_L, holding_R;
 bool judgingHold_L, judgingHold_R;
 int number_L_hold, number_R_hold;
+bool isThrough_L, isThrough_R;
 bool isFlickInvincible = false;
 
 int totalNotes;
@@ -219,15 +220,40 @@ void calcScore() {
     //if (combo.count[maxCombo] == totalNotes) totalScore = 10000000;
 }
 
+void calcThroughComboAndScore(double currentTime, bool autoMode) {
+    for (int i = 0; i < ssf->perfect_timeSize_L; i++) {
+        if (ssf->perfect_times_L[i] < currentTime) {
+            notesL[i].flag = false;
+            if (autoMode) {
+                judgeRank = 1;
+                combo_update();
+                calcScore();
+            }
+        }
+    }
+    for (int i = 0; i < ssf->perfect_timeSize_R; i++) {
+        if (ssf->perfect_times_R[i] < currentTime) {
+            notesR[i].flag = false;
+            if (autoMode) {
+                judgeRank = 1;
+                combo_update();
+                calcScore();
+            }
+        }
+    }
+    judgeRank = 0;
+}
+
 #pragma region //”»’èŒn
 
 void setJudge() {
-    bool hitFlag_L = 0, hitFlag_R = 0;
-    int judgeRank_L = 0, judgeRank_R = 0;
-    int number_L = 0, number_R = 0;
-    bool holding_L = 0, holding_R = 0;
-    bool judgingHold_L = 0, judgingHold_R = 0;
-    int number_L_hold = 0, number_R_hold = 0;
+    hitFlag_L = 0, hitFlag_R = 0;
+    judgeRank_L = 0, judgeRank_R = 0;
+    number_L = 0, number_R = 0;
+    holding_L = 0, holding_R = 0;
+    judgingHold_L = 0, judgingHold_R = 0;
+    number_L_hold = 0, number_R_hold = 0;
+    isThrough_L = 0, isThrough_R = 0;
     notUseAutoMode = true;
     judgeRank = 0;
 }
@@ -313,7 +339,7 @@ void judgeNotes(double currentTime) {
                     judgeRank_L = judge_tap(currentTime, ssf->perfect_times_L, i);
                     if (judgeRank_L != 0) {
                         number_L = i;
-                        number_L_hold = i;
+                        if (!judgingHold_L) number_L_hold = i;
                         hitFlag_L = 1;
                         notesL[i].deg = 70;
                         judgingHold_L = true;
@@ -374,7 +400,7 @@ void judgeNotes(double currentTime) {
                     judgeRank_R = judge_tap(currentTime, ssf->perfect_times_R, i);
                     if (judgeRank_R != 0) {
                         number_R = i;
-                        number_R_hold = i;
+                        if (!judgingHold_R) number_R_hold = i;
                         hitFlag_R = 1;
                         notesR[i].deg = 70;
                         judgingHold_R = true;
@@ -641,6 +667,7 @@ void judge_miss(double currentTime) {
                 if (ssf->notesType_L[i] == holdStart) {
                     notesL[ssf->hold.connect_L[i]].flag = false;
                     judgingHold_L = false;
+                    isThrough_L = true;
                     judge_endProcess(ssf->notesType_L[ssf->hold.connect_L[i]]);
                 }
             }
@@ -656,6 +683,7 @@ void judge_miss(double currentTime) {
                 if (ssf->notesType_R[i] == 2) {
                     notesR[ssf->hold.connect_R[i]].flag = false;
                     judgingHold_R = false;
+                    isThrough_R = true;
                     judge_endProcess(ssf->notesType_R[ssf->hold.connect_R[i]]);
                 }
             }
@@ -669,7 +697,12 @@ void judge_endProcess(int notesType) {
     calcScore();
     //”»’è‚É‚©‚©‚í‚ç‚¸“¯‚¶‰¹(ƒ~ƒXŠÜ‚Þ)
     if (notesType == holdEnd) {
-        PlaySoundMem(sound.hold_end, DX_PLAYTYPE_BACK);
+        if (isThrough_L || isThrough_R) {}
+        else {
+            PlaySoundMem(sound.hold_end, DX_PLAYTYPE_BACK);
+        }
+        isThrough_L = false;
+        isThrough_R = false;
         return;
     }
     if (judgeRank == miss) return;
